@@ -24,7 +24,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
         fillColor: Colors.white,
         prefixIcon: Icon(Icons.lock_outline),
         labelText: widget.label,
-        labelStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: AppColors.grey1),
         floatingLabelStyle: const TextStyle(color: AppColors.primary),
         suffixIcon: IconButton(onPressed: () {
           setState(() {

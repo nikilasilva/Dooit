@@ -30,22 +30,14 @@ class OnboardingScreen extends StatelessWidget {
               const Text(
                 'Stay Organized, Stay Productive – Your Tasks, Your Way!',
                 textAlign: TextAlign.center,
-                style: AppTextStyles.subHeadingDark),
+                style: AppTextStyles.subHeadingDark,
+              ),
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/signin');
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 15,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
+                style: AppButtonStyles.primaryButton,
                 child: const Text(
                   'Get Started',
                   style: AppTextStyles.buttonText,

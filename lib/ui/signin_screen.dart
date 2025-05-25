@@ -1,3 +1,4 @@
+import 'package:dooit/widgets/custom_input_field.dart';
 import 'package:dooit/widgets/custom_password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,27 +32,7 @@ class SigninScreen extends StatelessWidget {
                 Text('Sign In', style: AppTextStyles.subHeading),
                 const SizedBox(height: 16),
 
-                const TextField(
-                  cursorColor: AppColors.primary,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: Icon(Icons.email_outlined),
-                    labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.grey),
-                    floatingLabelStyle: TextStyle(color: AppColors.primary),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      borderSide: BorderSide(
-                        color: AppColors.primary,
-                        width: 2,
-                      ),
-                    ),
-                  ),
-                ),
+                const CustomInputField(label: 'Email', prefixIcon: Icons.email_outlined, keyboardType: TextInputType.emailAddress),
 
                 const SizedBox(height: 16),
 
@@ -71,9 +52,11 @@ class SigninScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/home');
+                    },
                     style: AppButtonStyles.primaryButton,
-                    child: const Text('Login', style: AppTextStyles.buttonText),
+                    child: const Text('Sign in', style: AppTextStyles.buttonText),
                   ),
                 ),
 

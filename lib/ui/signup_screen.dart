@@ -60,7 +60,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       onPressed: () {},
                       style: AppButtonStyles.primaryButton,
                       child: const Text(
-                        'Signup',
+                        'Sign up',
                         style: AppTextStyles.buttonText,
                       ),
                     ),

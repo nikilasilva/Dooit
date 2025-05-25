@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color background = Color(0xFFF8EFD9);
   static const Color primary = Color(0xFFF15A29);
+  static const Color secondary = Color(0xFFF4EFCA);
   static const Color textDark = Colors.black87;
   static const Color white = Colors.white;
+  static const Color grey1 = Colors.grey;
 }
 
 class AppTextStyles {
@@ -13,6 +15,18 @@ class AppTextStyles {
     fontSize: 48,
     fontWeight: FontWeight.bold,
     color: AppColors.primary,
+  );
+
+  static const TextStyle heading = TextStyle(
+    fontSize: 35,
+    fontWeight: FontWeight.bold,
+    color: AppColors.primary,
+  );
+
+  static const TextStyle subHeading = TextStyle(
+    fontSize: 22,
+    color: AppColors.primary,
+    fontWeight: FontWeight.bold,
   );
 
   static const TextStyle headingDark = TextStyle(
@@ -26,13 +40,7 @@ class AppTextStyles {
     color: AppColors.textDark,
     fontWeight: FontWeight.w500,
     height: 1.4,
-  );
-
-  static const TextStyle subHeading = TextStyle(
-    fontSize: 22,
-    color: AppColors.primary,
-    fontWeight: FontWeight.bold,
-  );
+  );  
 
   static const TextStyle linkStyle = TextStyle(
     fontSize: 14,

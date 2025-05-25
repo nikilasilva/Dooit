@@ -27,7 +27,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
         fillColor: Colors.white,
         prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
         labelText: widget.label,
-        labelStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: AppColors.grey1),
         floatingLabelStyle: const TextStyle(color: AppColors.primary),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
