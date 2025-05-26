@@ -12,8 +12,8 @@ class HomeScreen extends StatelessWidget {
     final today = DateTime.now();
 
     return Scaffold(
-      backgroundColor: Colors.white, // Set the overall background to white
-      bottomNavigationBar: BottomNavbar(currentIndex: 0, onTap: (value) {}),
+      backgroundColor: AppColors.white, // Set the overall background to white
+      bottomNavigationBar: BottomNavbar(currentIndex: 0),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

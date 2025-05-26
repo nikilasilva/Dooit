@@ -8,6 +8,7 @@ class AppColors {
   static const Color textDark = Colors.black87;
   static const Color white = Colors.white;
   static const Color grey1 = Colors.grey;
+  static const Color red = Color(0xFFFF0000);
 }
 
 class AppTextStyles {
@@ -40,7 +41,7 @@ class AppTextStyles {
     color: AppColors.textDark,
     fontWeight: FontWeight.w500,
     height: 1.4,
-  );  
+  );
 
   static const TextStyle linkStyle = TextStyle(
     fontSize: 14,
@@ -51,6 +52,18 @@ class AppTextStyles {
   static const TextStyle buttonText = TextStyle(
     fontSize: 20,
     color: AppColors.white,
+  );
+
+  static const TextStyle inputFieldText = TextStyle(
+    color: AppColors.primary,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const TextStyle cancelText = TextStyle(
+    color: AppColors.red,
+    fontWeight: FontWeight.bold,
+    fontSize: 16,
   );
 }
 

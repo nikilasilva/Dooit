@@ -1,4 +1,4 @@
-import 'package:dooit/widgets/custom_input_field.dart';
+import 'package:dooit/widgets/custom_input_field_label.dart';
 import 'package:dooit/widgets/custom_password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -32,7 +32,7 @@ class SigninScreen extends StatelessWidget {
                 Text('Sign In', style: AppTextStyles.subHeading),
                 const SizedBox(height: 16),
 
-                const CustomInputField(label: 'Email', prefixIcon: Icons.email_outlined, keyboardType: TextInputType.emailAddress),
+                const CustomInputFieldLabel(label: 'Email', prefixIcon: Icons.email_outlined, keyboardType: TextInputType.emailAddress),
 
                 const SizedBox(height: 16),
 

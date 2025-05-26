@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 
 class BottomNavbar extends StatelessWidget {
   final int currentIndex;
-  final ValueChanged<int> onTap;
 
   const BottomNavbar({
     super.key,
     required this.currentIndex,
-    required this.onTap,
   });
 
   @override
@@ -25,17 +23,48 @@ class BottomNavbar extends StatelessWidget {
       ),
       child: BottomNavigationBar(
         currentIndex: currentIndex,
-        onTap: onTap,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(context, '/home');              
+              break;
+            case 1:
+              // Navigator.pushNamed(context, routeName);
+              break;
+            case 2:
+              Navigator.pushNamed(context, '/add_task');
+              break;
+            default:
+          }
+        },
+        type: BottomNavigationBarType.fixed,
+        iconSize: 24,
         backgroundColor: AppColors.background,
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.grey1,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        items: const [
+        items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: ''),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle, size: 48, color: AppColors.primary),
+            icon: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.transparent,
+                border: Border.all(
+                  color: AppColors.primary,
+                  width: 2,
+                ),
+              ),
+              child: Icon(
+                currentIndex == 2 ? Icons.close : Icons.add,
+                size: 24,
+                color: AppColors.primary,
+              ),
+            ),
             label: '',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: ''),
