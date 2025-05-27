@@ -30,6 +30,12 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
   );
 
+  static const TextStyle subHeading2 = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: AppColors.primary,
+  );
+
   static const TextStyle headingDark = TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.w700,
@@ -54,6 +60,11 @@ class AppTextStyles {
     color: AppColors.white,
   );
 
+  static const TextStyle buttonTextPrimary = TextStyle(
+    fontSize: 16,
+    color: AppColors.primary,
+  );
+
   static const TextStyle inputFieldText = TextStyle(
     color: AppColors.primary,
     fontSize: 16,
@@ -70,6 +81,12 @@ class AppTextStyles {
 class AppButtonStyles {
   static final ButtonStyle primaryButton = ElevatedButton.styleFrom(
     backgroundColor: AppColors.primary,
+    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+  );
+
+  static final ButtonStyle outlineButton = OutlinedButton.styleFrom(
+    side: BorderSide(color: AppColors.primary),
     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
   );

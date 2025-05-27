@@ -67,11 +67,7 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Categories",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
-                          ),
+                          style: AppTextStyles.subHeading2,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -90,7 +86,10 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         CategoryButton(icon: Icons.work, label: "Work"),
                         CategoryButton(icon: Icons.person, label: "Personal"),
-                        CategoryButton(icon: Icons.shopping_cart, label: "Shopping"),
+                        CategoryButton(
+                          icon: Icons.shopping_cart,
+                          label: "Shopping",
+                        ),
                       ],
                     ),
                   ],
@@ -109,15 +108,16 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Today's Tasks",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
-                          ),
+                          style: AppTextStyles.subHeading2,
                         ),
-                        Text(
-                          "see all",
-                          style: TextStyle(color: AppColors.grey1),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/all_tasks');
+                          },
+                          child: Text(
+                            "see all",
+                            style: TextStyle(color: AppColors.grey1),
+                          ),
                         ),
                       ],
                     ),
