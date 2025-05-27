@@ -32,7 +32,9 @@ class _AllTasksScreenState extends State<AllTasksScreen> {
                 child: SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/previous_tasks');
+                    },
                     style: AppButtonStyles.outlineButton,
                     child: const Text(
                       'Previous Tasks',
@@ -42,7 +44,10 @@ class _AllTasksScreenState extends State<AllTasksScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 22,
+                  vertical: 12,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

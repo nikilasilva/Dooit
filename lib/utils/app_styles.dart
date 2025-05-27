@@ -60,6 +60,12 @@ class AppTextStyles {
     color: AppColors.white,
   );
 
+  static TextStyle confirmationText = TextStyle(
+    fontSize: 16,
+    color: Colors.grey[700],
+    height: 1.4,
+  );
+
   static const TextStyle buttonTextPrimary = TextStyle(
     fontSize: 16,
     color: AppColors.primary,
