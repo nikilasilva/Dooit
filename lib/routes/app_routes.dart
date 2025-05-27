@@ -1,4 +1,5 @@
 import 'package:dooit/ui/add_task_screen.dart';
+import 'package:dooit/ui/categories_screen.dart';
 import 'package:dooit/ui/home_screen.dart';
 import 'package:dooit/ui/onboarding_screen.dart';
 import 'package:dooit/ui/signin_screen.dart';
@@ -11,4 +12,5 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/signup': (context) => const SignupScreen(),
   '/home': (context) => const HomeScreen(),
   '/add_task': (context) => const AddTaskScreen(),
+  '/categories': (context) => const CategoriesScreen(),
 };

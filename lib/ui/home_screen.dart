@@ -22,23 +22,17 @@ class HomeScreen extends StatelessWidget {
               Container(
                 // Change header background color
                 color: AppColors.secondary,
-                padding: EdgeInsets.all(30), 
+                padding: EdgeInsets.all(30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Hello,",
-                          style: AppTextStyles.headingDark,
-                        ),
+                        Text("Hello,", style: AppTextStyles.headingDark),
                         Row(
                           children: [
-                            Text(
-                              "Nathan !",
-                              style: AppTextStyles.heading,
-                            ),
+                            Text("Nathan !", style: AppTextStyles.heading),
                           ],
                         ),
                         SizedBox(height: 8),
@@ -62,7 +56,9 @@ class HomeScreen extends StatelessWidget {
 
               // Categories with separate padding
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 22), // Padding for categories
+                padding: EdgeInsets.symmetric(
+                  horizontal: 22,
+                ), // Padding for categories
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -77,7 +73,15 @@ class HomeScreen extends StatelessWidget {
                             color: AppColors.primary,
                           ),
                         ),
-                        Text("see all", style: TextStyle(color: AppColors.grey1)),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/categories');
+                          },
+                          child: Text(
+                            "see all",
+                            style: TextStyle(color: AppColors.grey1),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 12),
@@ -111,19 +115,38 @@ class HomeScreen extends StatelessWidget {
                             color: AppColors.primary,
                           ),
                         ),
-                        Text("see all", style: TextStyle(color: AppColors.grey1)),
+                        Text(
+                          "see all",
+                          style: TextStyle(color: AppColors.grey1),
+                        ),
                       ],
                     ),
                     SizedBox(height: 12),
-                    TaskTile(title: "GYM workout", time: "12:00 pm", done: false),
-                    TaskTile(title: "Project meeting", time: "03:00 pm", done: false),
+                    TaskTile(
+                      title: "GYM workout",
+                      time: "12:00 pm",
+                      done: false,
+                    ),
+                    TaskTile(
+                      title: "Project meeting",
+                      time: "03:00 pm",
+                      done: false,
+                    ),
                     TaskTile(
                       title: "Dinner with Josh at 8pm",
                       time: "02:00 am",
                       done: false,
                     ),
-                    TaskTile(title: "Game meetup", time: "08:00 pm", done: false),
-                    TaskTile(title: "Take out trash", time: "10:00 am", done: true),
+                    TaskTile(
+                      title: "Game meetup",
+                      time: "08:00 pm",
+                      done: false,
+                    ),
+                    TaskTile(
+                      title: "Take out trash",
+                      time: "10:00 am",
+                      done: true,
+                    ),
                   ],
                 ),
               ),
