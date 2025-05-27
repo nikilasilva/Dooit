@@ -1,6 +1,7 @@
 import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/category_button.dart';
+import 'package:dooit/widgets/profile_image.dart';
 import 'package:dooit/widgets/task_tile.dart';
 import 'package:flutter/material.dart';
 
@@ -45,9 +46,11 @@ class HomeScreen extends StatelessWidget {
                         SizedBox(height: 4),
                       ],
                     ),
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage("assets/logo.png"),
+                    ProfileImage(
+                      imagePath: "assets/images/pro_img.jpg",
+                      fallbackText: "Profile Icon",
+                      borderColor: AppColors.primary,
+                      size: 110.0,
                     ),
                   ],
                 ),
