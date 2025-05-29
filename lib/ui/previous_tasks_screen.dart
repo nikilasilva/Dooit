@@ -93,6 +93,7 @@ class _PreviousTasksScreenState extends State<PreviousTasksScreen> {
                           color: AppColors.red,
                           size: 16,
                         ),
+                        SizedBox(width: 5),
                         Text(
                           'Delete all completed tasks',
                           style: AppTextStyles.cancelText,
