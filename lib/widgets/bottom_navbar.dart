@@ -29,7 +29,7 @@ class BottomNavbar extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/home');              
               break;
             case 1:
-              // Navigator.pushNamed(context, routeName);
+              Navigator.pushNamed(context, '/calendar');
               break;
             case 2:
               Navigator.pushNamed(context, '/add_task');

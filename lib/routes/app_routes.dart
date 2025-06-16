@@ -1,5 +1,6 @@
 import 'package:dooit/ui/add_task_screen.dart';
 import 'package:dooit/ui/all_tasks_screen.dart';
+import 'package:dooit/ui/calendar_screen.dart';
 import 'package:dooit/ui/categories_screen.dart';
 import 'package:dooit/ui/home_screen.dart';
 import 'package:dooit/ui/onboarding_screen.dart';
@@ -20,5 +21,6 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/all_tasks': (context) => const AllTasksScreen(),
   '/previous_tasks': (context) => const PreviousTasksScreen(),
   '/profile': (context) => const ProfileScreen(),
-  '/progress': (context) => const ProgressScreen()
+  '/progress': (context) => const ProgressScreen(),
+  '/calendar': (context) => const CalendarScreen(),
 };
