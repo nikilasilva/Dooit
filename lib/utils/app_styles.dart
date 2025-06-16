@@ -66,6 +66,12 @@ class AppTextStyles {
     height: 1.4,
   );
 
+  static TextStyle descriptionText = TextStyle(
+    fontSize: 15,
+    color: Colors.grey[600],
+    fontWeight: FontWeight.w500,
+  );
+
   static const TextStyle buttonTextPrimary = TextStyle(
     fontSize: 16,
     color: AppColors.primary,

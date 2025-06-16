@@ -34,6 +34,9 @@ class BottomNavbar extends StatelessWidget {
             case 2:
               Navigator.pushNamed(context, '/add_task');
               break;
+            case 3:
+              Navigator.pushNamed(context, '/progress');
+              break;
             case 4:
               Navigator.pushNamed(context, '/profile');
             default:

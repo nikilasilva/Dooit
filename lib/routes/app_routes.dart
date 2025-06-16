@@ -5,6 +5,7 @@ import 'package:dooit/ui/home_screen.dart';
 import 'package:dooit/ui/onboarding_screen.dart';
 import 'package:dooit/ui/previous_tasks_screen.dart';
 import 'package:dooit/ui/profile_screen.dart';
+import 'package:dooit/ui/progress_screen.dart';
 import 'package:dooit/ui/signin_screen.dart';
 import 'package:dooit/ui/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,4 +20,5 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/all_tasks': (context) => const AllTasksScreen(),
   '/previous_tasks': (context) => const PreviousTasksScreen(),
   '/profile': (context) => const ProfileScreen(),
+  '/progress': (context) => const ProgressScreen()
 };
