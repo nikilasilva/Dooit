@@ -4,9 +4,16 @@ import 'package:flutter/material.dart';
 class TaskTile extends StatelessWidget {
   final String title;
   final String time;
+  final String category; // Add this
   final bool done;
 
-  const TaskTile({super.key, required this.title, required this.time, this.done = false});
+  const TaskTile({
+    super.key, 
+    required this.title, 
+    required this.time, 
+    required this.category, // Add this
+    this.done = false
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +27,8 @@ class TaskTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(done ? Icons.radio_button_checked : Icons.radio_button_off, color: done ? AppColors.grey1 : AppColors.primary),
+          Icon(done ? Icons.radio_button_checked : Icons.radio_button_off, 
+               color: done ? AppColors.grey1 : AppColors.primary),
           SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -31,7 +39,28 @@ class TaskTile extends StatelessWidget {
               ),
             ),
           ),
-          Text(time, style: TextStyle(color: Colors.grey)),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(time, style: TextStyle(color: Colors.grey)),
+              SizedBox(height: 4),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  category,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),              
+            ],
+          ),
         ],
       ),
     );

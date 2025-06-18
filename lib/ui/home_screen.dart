@@ -128,26 +128,31 @@ class HomeScreen extends StatelessWidget {
                     TaskTile(
                       title: "GYM workout",
                       time: "12:00 pm",
+                      category: "Health",
                       done: false,
                     ),
                     TaskTile(
                       title: "Project meeting",
                       time: "03:00 pm",
+                      category: "Work",
                       done: false,
                     ),
                     TaskTile(
                       title: "Dinner with Josh at 8pm",
                       time: "02:00 am",
+                      category: "Work",
                       done: false,
                     ),
                     TaskTile(
                       title: "Game meetup",
                       time: "08:00 pm",
+                      category: "Personal",
                       done: false,
                     ),
                     TaskTile(
                       title: "Take out trash",
                       time: "10:00 am",
+                      category: "Personal",
                       done: true,
                     ),
                   ],
