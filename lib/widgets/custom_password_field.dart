@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 class CustomPasswordField extends StatefulWidget {
   final String label;
   final TextEditingController? controller;
-  const CustomPasswordField({super.key, required this.label, this.controller});
+  final String? Function(String?)? validator;
+
+  const CustomPasswordField({
+    super.key,
+    required this.label,
+    this.controller,
+    this.validator,
+  });
 
   @override
   State<CustomPasswordField> createState() => _CustomPasswordFieldState();
@@ -15,8 +22,9 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: widget.controller,
+      validator: widget.validator,
       obscureText: _obscure,
       cursorColor: AppColors.primary,
       decoration: InputDecoration(
@@ -26,11 +34,14 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
         labelText: widget.label,
         labelStyle: const TextStyle(color: AppColors.grey1),
         floatingLabelStyle: const TextStyle(color: AppColors.primary),
-        suffixIcon: IconButton(onPressed: () {
-          setState(() {
-            _obscure = !_obscure;
-          });
-        }, icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility)),
+        suffixIcon: IconButton(
+          onPressed: () {
+            setState(() {
+              _obscure = !_obscure;
+            });
+          },
+          icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
+        ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
@@ -38,6 +49,14 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
           borderRadius: BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(color: AppColors.primary, width: 2),
         ),
+        errorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(color: AppColors.red, width: 2)
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(color: AppColors.red, width: 2)
+        )
       ),
     );
   }

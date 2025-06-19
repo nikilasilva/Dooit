@@ -5,11 +5,16 @@ class CustomInputFieldLabel extends StatefulWidget {
   final String label;
   final IconData? prefixIcon;
   final TextInputType? keyboardType;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+
   const CustomInputFieldLabel({
     super.key,
     required this.label,
     this.prefixIcon,
     this.keyboardType,
+    this.controller,
+    this.validator,
   });
 
   @override
@@ -19,7 +24,9 @@ class CustomInputFieldLabel extends StatefulWidget {
 class _CustomInputFieldLabelState extends State<CustomInputFieldLabel> {
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      controller: widget.controller,
+      validator: widget.validator,
       keyboardType: widget.keyboardType,
       cursorColor: AppColors.primary,
       decoration: InputDecoration(
@@ -35,6 +42,14 @@ class _CustomInputFieldLabelState extends State<CustomInputFieldLabel> {
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(color: AppColors.primary, width: 2),
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(color: Colors.red, width: 2),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(color: Colors.red, width: 2),
         ),
       ),
     );
