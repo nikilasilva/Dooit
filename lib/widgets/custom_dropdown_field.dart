@@ -5,12 +5,18 @@ class CustomDropdownField extends StatefulWidget {
   final String label;
   final IconData? prefixIcon;
   final List<String> items;
+  final String? initialValue;
+  final Function(String?)? onChanged;
+  final String? Function(String?)? validator;
 
   const CustomDropdownField({
     super.key,
     required this.label,
     required this.items,
     this.prefixIcon,
+    this.initialValue,
+    this.onChanged,
+    this.validator
   });
 
   @override
@@ -19,6 +25,12 @@ class CustomDropdownField extends StatefulWidget {
 
 class _CustomDropdownFieldState extends State<CustomDropdownField> {
   String? _selectedItem;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedItem = widget.initialValue ?? (widget.items.isNotEmpty ? widget.items[0] : null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +51,11 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
             setState(() {
               _selectedItem = newValue;
             });
+            if (widget.onChanged != null) {
+              widget.onChanged!(newValue);
+            }
           },
+          validator: widget.validator,
           items: widget.items.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
