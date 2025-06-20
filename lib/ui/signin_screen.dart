@@ -1,5 +1,6 @@
 import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/services/auth_service.dart';
+import 'package:dooit/utils/snackbar_helper.dart';
 import 'package:dooit/widgets/custom_input_field_label.dart';
 import 'package:dooit/widgets/custom_password_field.dart';
 import 'package:flutter/material.dart';
@@ -36,13 +37,7 @@ class _SigninScreenState extends State<SigninScreen> {
 
       if (!isConnected) {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Cannont connect to Firebase. Please check your internet connection",
-            ),
-          ),
-        );
+        SnackbarHelper.showErrorSnackBar(context, "Cannot connect to Firebase. Please check your internet connection");
         return;
       }
 
@@ -56,11 +51,14 @@ class _SigninScreenState extends State<SigninScreen> {
       if (success) {
         Navigator.pushReplacementNamed(context, '/home');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(authProvider.errorMessage ?? 'Sign in failed'),
-          ),
-        );
+        final errorMsg = authProvider.errorMessage ?? 'Sign in failed';
+        if (errorMsg.contains('password')) {
+          // Password-specific error
+          SnackbarHelper.showErrorSnackBar(context, errorMsg);
+        } else {
+          // Other errors
+          SnackbarHelper.showErrorSnackBar(context, errorMsg);
+        }
       }
     }
   }

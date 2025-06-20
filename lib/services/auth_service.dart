@@ -79,14 +79,14 @@ class AuthService {
   // Handle Firebase Auth exceptions
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
+      case 'wrong-password':
+        return 'Incorrect password. Please try again.';
       case 'weak-password':
         return 'The password provided is too weak.';
       case 'email-already-in-use':
         return 'The account already exists for that email.';
       case 'user-not-found':
         return 'No user found for that email.';
-      case 'wrong-password':
-        return 'Wrong password provided for that user.';
       case 'invalid-email':
         return 'The email address is not valid.';
       case 'user-disabled':
@@ -95,6 +95,8 @@ class AuthService {
         return 'Too many requests. Try again later.';
       case 'operation-not-allowed':
         return 'Signing in with Email and Password is not enabled.';
+      case 'invalid-credential':
+        return 'Incorrect email or password. Please try again';
       default:
         return 'An error occurred: ${e.message}';
     }
