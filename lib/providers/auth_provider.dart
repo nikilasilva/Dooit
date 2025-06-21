@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
@@ -101,6 +102,34 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setError(e.toString());
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // Update username
+  Future<bool> updateUsername(String newUsername) async {
+    if (_user == null) {
+      _setError("No user is currently signed in.");
+      return false;
+    }
+    if (newUsername.trim().isEmpty) {
+      _setError("Username cannot be empty");
+      return false;
+    }
+
+    _setLoading(true);
+    _clearError();
+
+    try {
+      await _user!.updateDisplayName(newUsername);
+      // Reload the user object to get updated info
+      await _user!.reload();
+      _user = _authService.currentUser;
+      return true;
+    } catch (e) {
+      _setError("Failed to update username: ${e.toString()}");
       return false;
     } finally {
       _setLoading(false);

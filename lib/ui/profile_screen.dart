@@ -1,6 +1,7 @@
 import 'package:change_case/change_case.dart';
 import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/utils/app_styles.dart';
+import 'package:dooit/utils/snackbar_helper.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/change_password_dialog.dart';
 import 'package:dooit/widgets/change_profile_picture_dialog.dart';
@@ -74,7 +75,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return CustomInputDialog(
           title: "Change username",
           hintText: "New username",
-          onSubmit: (value) {},
+          onSubmit: (value) async {
+            if (value.trim().isEmpty) {
+              SnackbarHelper.showErrorSnackBar(context, "Username cannot be empty.");
+              return;
+            }
+
+            final authProvider =
+                Provider.of<AuthProvider>(context, listen: false);
+            final success = await authProvider.updateUsername(value);
+
+            if (!mounted) return;
+
+            if (success) {
+              // Update the local state to reflect the change immediately
+              setState(() {
+                _username = value.toTitleCase();
+              });
+              SnackbarHelper.showSuccessSnackBar(
+                  context, "Username updated successfully!");
+            } else {
+              SnackbarHelper.showErrorSnackBar(
+                context,
+                authProvider.errorMessage ?? "Failed to update username.",
+              );
+            }
+          },
         );
       },
     );
@@ -139,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             _isLoading
                                 ? const SkeletonText(width: 200, height: 22)
                                 : Text(
-                                  "$_username",
+                                  _username,
                                   style: AppTextStyles.heading.copyWith(fontSize: 30),
                                 ),
                       ),
