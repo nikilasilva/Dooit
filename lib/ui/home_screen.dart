@@ -1,8 +1,10 @@
 import 'package:dooit/providers/auth_provider.dart';
+import 'package:dooit/providers/category_provider.dart';
 import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/category_button.dart';
 import 'package:dooit/widgets/profile_image.dart';
+import 'package:dooit/widgets/skeleton_category.dart';
 import 'package:dooit/widgets/skeleton_text.dart';
 import 'package:dooit/widgets/task_tile.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadUserData();
   }
 
+  Widget _buildCategorySkeletons() {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [SkeletonCategory(), SkeletonCategory(), SkeletonCategory()],
+    );
+  }
+
   Future<void> _loadUserData() async {
     // Use a post-frame callbackto avoid calling setState during build
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -36,9 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
         setState(() {
           // If display name exists, use it; otherwise use the first part of email
-          String rawName = displayName != null && displayName.isNotEmpty
-              ? displayName
-              : email != null
+          String rawName =
+              displayName != null && displayName.isNotEmpty
+                  ? displayName
+                  : email != null
                   ? email.split('@')[0]
                   : 'User';
           _username = rawName.toTitleCase();
@@ -84,10 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? const SkeletonText(width: 100, height: 28)
                                   : Flexible(
                                     child: Text(
-                                        "$_username !",
-                                        style: AppTextStyles.heading,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                                      "$_username !",
+                                      style: AppTextStyles.heading,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                             ],
                           ),
@@ -122,10 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Categories",
-                          style: AppTextStyles.subHeading2,
-                        ),
+                        Text("Categories", style: AppTextStyles.subHeading2),
                         GestureDetector(
                           onTap: () {
                             Navigator.pushNamed(context, '/categories');
@@ -138,16 +145,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CategoryButton(icon: Icons.work, label: "Work"),
-                        CategoryButton(icon: Icons.person, label: "Personal"),
-                        CategoryButton(
-                          icon: Icons.shopping_cart,
-                          label: "Shopping",
-                        ),
-                      ],
+
+                    Consumer<CategoryProvider>(
+                      builder: (context, categoryProvider, child) {
+                        if (categoryProvider.isLoading) {
+                          return _buildCategorySkeletons();
+                        }
+                        final displayedCategories =
+                            categoryProvider.categories.take(3).toList();
+
+                        if (displayedCategories.isEmpty) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Text("No categories available."),
+                            ),
+                          );
+                        }
+
+                        // Build the category buttons dynamically
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: displayedCategories.map((category) {
+                            return CategoryButton(
+                              icon: category['icon'],
+                              label: category['label'],
+                              id: category['id'],
+                              onTap: () {
+                                // Navigate to the full categories screen or a filtered task list
+                                Navigator.pushNamed(context, '/categories');
+                              },
+                            );
+                          }).toList(),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -163,10 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Today's Tasks",
-                          style: AppTextStyles.subHeading2,
-                        ),
+                        Text("Today's Tasks", style: AppTextStyles.subHeading2),
                         GestureDetector(
                           onTap: () {
                             Navigator.pushNamed(context, '/all_tasks');
