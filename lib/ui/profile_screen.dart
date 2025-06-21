@@ -124,13 +124,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _showChangePasswordDialog() {
-    showDialog(
+  void _showChangePasswordDialog() async {
+    // Await the result from the dialog. It will be 'true' on success.
+    final result = await showDialog<bool>(
       context: context,
       builder: (BuildContext dialogContext) {
-        return ChangePasswordDialog();
+        return const ChangePasswordDialog();
       },
     );
+
+    // If the result is true, it means the password was changed successfully.
+    if (result == true) {
+      if (!mounted) return;
+      // Show the success message using the ProfileScreen's context.
+      SnackbarHelper.showSuccessSnackBar(
+        context,
+        "Password changed successfully!",
+      );
+    }
   }
 
   void _showChangeProfilePictureDialog() {

@@ -108,6 +108,44 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> changePassword(String oldPassword, String newPassword) async {
+    if (_user == null || _user!.email == null) {
+      _setError("No user is currently signed in.");
+      return false;
+    }
+
+    _setLoading(true);
+    _clearError();
+
+    try {
+      // Create credentials with the user's email and old password
+      AuthCredential credential = EmailAuthProvider.credential(email: _user!.email!, password: oldPassword);
+
+      // Re-authencticate the user to confirm their identity
+      await _user!.reauthenticateWithCredential(credential);
+
+      // if re_authenctication is successful, update the password.
+      await _user!.updatePassword(newPassword);
+
+      return true;
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        _setError('The old password you entered is incorrect.');
+      } else if (e.code == 'weak-password') {
+        _setError('The new password is too weak');
+      } else {
+        _setError("An error occured. Please try again.");
+      }
+      return false;
+    } catch (e) {
+      _setError("An unexpected error occured: ${e.toString()}");
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   // Update username
   Future<bool> updateUsername(String newUsername) async {
     if (_user == null) {

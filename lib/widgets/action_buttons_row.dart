@@ -2,8 +2,8 @@ import 'package:dooit/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class ActionButtonsRow extends StatelessWidget {
-  final VoidCallback onCancel;
-  final VoidCallback onSubmit;
+  final VoidCallback? onCancel;
+  final VoidCallback? onSubmit;
   final Color submitColor;
   final IconData submitIcon;
 
