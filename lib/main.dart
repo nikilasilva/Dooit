@@ -1,4 +1,5 @@
 import 'package:dooit/providers/auth_provider.dart';
+import 'package:dooit/providers/category_provider.dart';
 import 'package:dooit/providers/task_provider.dart';
 import 'package:dooit/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,6 +21,10 @@ class DooltApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => TaskProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, CategoryProvider>(create: (context) => CategoryProvider(), update: (context, auth, previousCategoryProvider) {
+          previousCategoryProvider?.updateUser();
+          return previousCategoryProvider!;
+        },)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

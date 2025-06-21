@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import '../models/task.dart';
 
 class FirestoreService {
@@ -7,6 +8,11 @@ class FirestoreService {
   // Get user-specific tasks collection
   CollectionReference _getUserTasksCollection(String userId) {
     return _db.collection('users').doc(userId).collection('tasks');
+  }
+
+  // Get user-specific categories collection
+  CollectionReference _getUserCategoriesCollection(String userId) {
+    return _db.collection('users').doc(userId).collection('categories');
   }
 
   // Add Task for specific user
@@ -80,5 +86,63 @@ class FirestoreService {
           (snapshot) =>
               snapshot.docs.map((doc) => Task.fromFireStore(doc)).toList(),
         );
+  }
+
+  Stream<List<Map<String, dynamic>>> getUserCategories(String userId) {
+    return _db
+        .collection('users')
+        .doc(userId)
+        .collection('categories')
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((doc) {
+            final data = doc.data();
+            return {
+              'id': doc.id,
+              'icon': _getIconFromString(data['icon'] ?? 'category'),
+              'label': data['label'] ?? 'Category',
+            };
+          }).toList();
+        });
+  }
+
+  // Add a new category
+  Future<void> addCategory(String userId, String label, String iconName) async {
+    await _getUserCategoriesCollection(
+      userId,
+    ).add({'label': label, 'icon': iconName, 'createdAt': Timestamp.now()});
+  }
+
+  // Delete a category
+  Future<void> deleteCategory(String userId, String categoryId) async {
+    await _getUserCategoriesCollection(userId).doc(categoryId).delete();
+  }
+
+  // Helper method to convert string icon name to IconData
+  IconData _getIconFromString(String iconName) {
+    switch (iconName) {
+      case 'work':
+        return Icons.work;
+      case 'person':
+        return Icons.person;
+      case 'shopping_cart':
+        return Icons.shopping_cart;
+      case 'monitor_heart':
+        return Icons.monitor_heart;
+      case 'home':
+        return Icons.home;
+      case 'family_restroom':
+        return Icons.family_restroom;
+      case 'school':
+        return Icons.school;
+      case 'fitness_center':
+        return Icons.fitness_center;
+      case 'local_dining':
+        return Icons.local_dining;
+      case 'celebration':
+        return Icons.celebration;
+      default:
+        return Icons.category;
+    }
   }
 }

@@ -27,13 +27,21 @@ class AuthProvider extends ChangeNotifier {
     try {
       _setLoading(true);
       _clearError();
-      
-      UserCredential? result = await _authService.signUpWithEmailAndPassword(email, password);
-      
-      if (result != null) {
-        // Update display name
-        await result.user?.updateDisplayName(username);
-        _user = result.user;
+
+      UserCredential? result = await _authService.signUpWithEmailAndPassword(
+        email,
+        password,
+      );
+
+      if (result != null && result.user != null) {
+        // Update display name if provided
+        if (username.isNotEmpty) {
+          await result.user!.updateDisplayName(username);
+          await result.user!.reload();
+        }
+
+        _user = _authService.currentUser;
+        notifyListeners();
         return true;
       }
       return false;
@@ -50,11 +58,15 @@ class AuthProvider extends ChangeNotifier {
     try {
       _setLoading(true);
       _clearError();
-      
-      UserCredential? result = await _authService.signInWithEmailAndPassword(email, password);
-      
-      if (result != null) {
+
+      UserCredential? result = await _authService.signInWithEmailAndPassword(
+        email,
+        password,
+      );
+
+      if (result != null && result.user != null) {
         _user = result.user;
+        notifyListeners();
         return true;
       }
       return false;
@@ -84,7 +96,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       _setLoading(true);
       _clearError();
-      
+
       await _authService.resetPassword(email);
       return true;
     } catch (e) {
