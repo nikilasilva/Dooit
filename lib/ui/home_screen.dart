@@ -3,6 +3,7 @@ import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/category_button.dart';
 import 'package:dooit/widgets/profile_image.dart';
+import 'package:dooit/widgets/skeleton_text.dart';
 import 'package:dooit/widgets/task_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -79,14 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             // Show loading indicator or username
                             _isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: AppColors.primary,
-                                    ),
-                                  )
+                                ? const SkeletonText(width: 100, height: 28)
                                 : Text(
                                     "$_username !",
                                     style: AppTextStyles.heading,
