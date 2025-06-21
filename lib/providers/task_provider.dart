@@ -16,6 +16,14 @@ class TaskProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
+  // Get tasks due today
+  List<Task> get tasksForToday {
+    final now = DateTime.now();
+    return _tasks.where((task) {
+      return task.dueDate!.year == now.year && task.dueDate!.month == now.month && task.dueDate!.day == now.day;
+    }).toList();
+  }
+
   Future<bool> addTask({
     required String title,
     required String category,

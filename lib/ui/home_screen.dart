@@ -1,10 +1,12 @@
 import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/providers/category_provider.dart';
+import 'package:dooit/providers/task_provider.dart';
 import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/category_button.dart';
 import 'package:dooit/widgets/profile_image.dart';
 import 'package:dooit/widgets/skeleton_category.dart';
+import 'package:dooit/widgets/skeleton_task_tile.dart';
 import 'package:dooit/widgets/skeleton_text.dart';
 import 'package:dooit/widgets/task_tile.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +27,24 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    // Use a post-frame callback to safely access the provider context
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadUserData();
+      // Load initial data from providers
+      Provider.of<TaskProvider>(context, listen: false).loadTasks();
+    });
   }
 
   Widget _buildCategorySkeletons() {
     return const Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [SkeletonCategory(), SkeletonCategory(), SkeletonCategory()],
+    );
+  }
+
+  Widget _buildTaskSkeletons() {
+    return const Column(
+      children: [SkeletonTaskTile(), SkeletonTaskTile(), SkeletonTaskTile()],
     );
   }
 
@@ -166,17 +179,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         // Build the category buttons dynamically
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: displayedCategories.map((category) {
-                            return CategoryButton(
-                              icon: category['icon'],
-                              label: category['label'],
-                              id: category['id'],
-                              onTap: () {
-                                // Navigate to the full categories screen or a filtered task list
-                                Navigator.pushNamed(context, '/categories');
-                              },
-                            );
-                          }).toList(),
+                          children:
+                              displayedCategories.map((category) {
+                                return CategoryButton(
+                                  icon: category['icon'],
+                                  label: category['label'],
+                                  id: category['id'],
+                                  onTap: () {
+                                    // Navigate to the full categories screen or a filtered task list
+                                    Navigator.pushNamed(context, '/categories');
+                                  },
+                                );
+                              }).toList(),
                         );
                       },
                     ),
@@ -207,35 +221,47 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     SizedBox(height: 12),
-                    TaskTile(
-                      title: "GYM workout",
-                      time: "12:00 pm",
-                      category: "Health",
-                      done: false,
-                    ),
-                    TaskTile(
-                      title: "Project meeting",
-                      time: "03:00 pm",
-                      category: "Work",
-                      done: false,
-                    ),
-                    TaskTile(
-                      title: "Dinner with Josh at 8pm",
-                      time: "02:00 am",
-                      category: "Work",
-                      done: false,
-                    ),
-                    TaskTile(
-                      title: "Game meetup",
-                      time: "08:00 pm",
-                      category: "Personal",
-                      done: false,
-                    ),
-                    TaskTile(
-                      title: "Take out trash",
-                      time: "10:00 am",
-                      category: "Personal",
-                      done: true,
+                    Consumer<TaskProvider>(
+                      builder: (context, taskProvider, child) {
+                        if (taskProvider.isLoading &&
+                            taskProvider.tasks.isEmpty) {
+                          return _buildTaskSkeletons();
+                        }
+
+                        final todaysTasks = taskProvider.tasksForToday;
+
+                        if (todaysTasks.isEmpty) {
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 32.0,
+                              ),
+                              child: Text(
+                                "No tasks for today. Enjoy your day!",
+                                style: AppTextStyles.descriptionText,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return Column(
+                          children:
+                              todaysTasks.map((task) {
+                                return GestureDetector(
+                                  onTap:
+                                      () => taskProvider.toggleTaskCompletion(
+                                        task
+                                      ),
+                                  child: TaskTile(
+                                    title: task.title,
+                                    time: task.time,
+                                    category: task.category,
+                                    done: task.isCompleted,
+                                  ),
+                                );
+                              }).toList(),
+                        );
+                      },
                     ),
                   ],
                 ),
