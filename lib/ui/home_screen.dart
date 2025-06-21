@@ -72,29 +72,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Hello,", style: AppTextStyles.headingDark),
-                        Row(
-                          children: [
-                            // Show loading indicator or username
-                            _isLoading
-                                ? const SkeletonText(width: 100, height: 28)
-                                : Text(
-                                    "$_username !",
-                                    style: AppTextStyles.heading,
-                                    overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Hello,", style: AppTextStyles.headingDark),
+                          Row(
+                            children: [
+                              // Show loading indicator or username
+                              _isLoading
+                                  ? const SkeletonText(width: 100, height: 28)
+                                  : Flexible(
+                                    child: Text(
+                                        "$_username !",
+                                        style: AppTextStyles.heading,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                   ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          "${today.day} ${_monthName(today.month)} ${today.year} (${_weekday(today.weekday)})",
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                        SizedBox(height: 8),
-                      ],
+                            ],
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            "${today.day} ${_monthName(today.month)} ${today.year} (${_weekday(today.weekday)})",
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          SizedBox(height: 8),
+                        ],
+                      ),
                     ),
                     ProfileImage(
                       imagePath: "assets/images/pro_img.jpg",
