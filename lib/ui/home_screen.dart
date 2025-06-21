@@ -1,12 +1,56 @@
+import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/category_button.dart';
 import 'package:dooit/widgets/profile_image.dart';
 import 'package:dooit/widgets/task_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:change_case/change_case.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String _username = '';
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    // Use a post-frame callbackto avoid calling setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      if (authProvider.user != null) {
+        final displayName = authProvider.user!.displayName;
+        final email = authProvider.user!.email;
+
+        setState(() {
+          // If display name exists, use it; otherwise use the first part of email
+          String rawName = displayName != null && displayName.isNotEmpty
+              ? displayName
+              : email != null
+                  ? email.split('@')[0]
+                  : 'User';
+          _username = rawName.toTitleCase();
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _username = "User";
+          _isLoading = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +77,21 @@ class HomeScreen extends StatelessWidget {
                         Text("Hello,", style: AppTextStyles.headingDark),
                         Row(
                           children: [
-                            Text("Nathan !", style: AppTextStyles.heading),
+                            // Show loading indicator or username
+                            _isLoading
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: AppColors.primary,
+                                    ),
+                                  )
+                                : Text(
+                                    "$_username !",
+                                    style: AppTextStyles.heading,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                           ],
                         ),
                         SizedBox(height: 8),
@@ -42,8 +100,6 @@ class HomeScreen extends StatelessWidget {
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                         SizedBox(height: 8),
-                        Text("Your progress", style: TextStyle(fontSize: 12)),
-                        SizedBox(height: 4),
                       ],
                     ),
                     ProfileImage(
