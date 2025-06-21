@@ -59,8 +59,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return CustomConfirmationDialog(
           title: "Confirm logout",
           message: "Are you sure you want to logout?",
-          onSubmit: () {
-            Navigator.pushNamed(context, '/signin');
+          onSubmit: () async {
+            final authProvider = Provider.of<AuthProvider>(
+              context,
+              listen: false,
+            );
+            await authProvider.signOut();
+
+            if (!mounted) return;
+
+            // Clear the navigation stack and go to the sign-in screen
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil('/signin', (route) => false);
           },
         );
       },
@@ -77,12 +88,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           hintText: "New username",
           onSubmit: (value) async {
             if (value.trim().isEmpty) {
-              SnackbarHelper.showErrorSnackBar(context, "Username cannot be empty.");
+              SnackbarHelper.showErrorSnackBar(
+                context,
+                "Username cannot be empty.",
+              );
               return;
             }
 
-            final authProvider =
-                Provider.of<AuthProvider>(context, listen: false);
+            final authProvider = Provider.of<AuthProvider>(
+              context,
+              listen: false,
+            );
             final success = await authProvider.updateUsername(value);
 
             if (!mounted) return;
@@ -93,7 +109,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _username = value.toTitleCase();
               });
               SnackbarHelper.showSuccessSnackBar(
-                  context, "Username updated successfully!");
+                context,
+                "Username updated successfully!",
+              );
             } else {
               SnackbarHelper.showErrorSnackBar(
                 context,
@@ -166,7 +184,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ? const SkeletonText(width: 200, height: 22)
                                 : Text(
                                   _username,
-                                  style: AppTextStyles.heading.copyWith(fontSize: 30),
+                                  style: AppTextStyles.heading.copyWith(
+                                    fontSize: 30,
+                                  ),
                                 ),
                       ),
                     ],
