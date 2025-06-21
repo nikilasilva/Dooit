@@ -1,3 +1,5 @@
+import 'package:change_case/change_case.dart';
+import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/change_password_dialog.dart';
@@ -6,7 +8,9 @@ import 'package:dooit/widgets/custom_confirmation_dialog.dart';
 import 'package:dooit/widgets/custom_input_dialog.dart';
 import 'package:dooit/widgets/profile_image.dart';
 import 'package:dooit/widgets/profile_option_tile.dart';
+import 'package:dooit/widgets/skeleton_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,6 +20,37 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String _username = '';
+  bool _isLoading = true;
+
+  Future<void> _loadUserData() async {
+    // Use a post-frame callbackto avoid calling setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      if (authProvider.user != null) {
+        final displayName = authProvider.user!.displayName;
+        final email = authProvider.user!.email;
+
+        setState(() {
+          // If display name exists, use it; otherwise use the first part of email
+          String rawName =
+              displayName != null && displayName.isNotEmpty
+                  ? displayName
+                  : email != null
+                  ? email.split('@')[0]
+                  : 'User';
+          _username = rawName.toTitleCase();
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _username = "User";
+          _isLoading = false;
+        });
+      }
+    });
+  }
+
   void _showLogoutConfirmationDialog() {
     showDialog(
       context: context,
@@ -67,6 +102,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadUserData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -91,7 +134,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         size: 100.0,
                       ),
                       SizedBox(height: 20),
-                      Text("Nathan Jacob", style: AppTextStyles.subHeading),
+                      Center(
+                        child:
+                            _isLoading
+                                ? const SkeletonText(width: 200, height: 22)
+                                : Text(
+                                  "$_username",
+                                  style: AppTextStyles.heading.copyWith(fontSize: 30),
+                                ),
+                      ),
                     ],
                   ),
                 ),
