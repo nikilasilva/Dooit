@@ -177,20 +177,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         // Build the category buttons dynamically
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:
-                              displayedCategories.map((category) {
-                                return CategoryButton(
-                                  icon: category['icon'],
-                                  label: category['label'],
-                                  id: category['id'],
-                                  onTap: () {
-                                    // Navigate to the full categories screen or a filtered task list
-                                    Navigator.pushNamed(context, '/categories');
-                                  },
-                                );
-                              }).toList(),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children:
+                                displayedCategories.map((category) {
+                                  return CategoryButton(
+                                    icon: category['icon'],
+                                    label: category['label'],
+                                    id: category['id'],
+                                    onTap: () {
+                                      // Navigate to the full categories screen or a filtered task list
+                                      Navigator.pushNamed(context, '/categories');
+                                    },
+                                  );
+                                }).toList(),
+                          ),
                         );
                       },
                     ),
@@ -201,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // Tasks with separate padding
               Container(
-                padding: EdgeInsets.all(22), // Padding for tasks
+                padding: EdgeInsets.fromLTRB(22, 0, 22, 22), // Padding for tasks
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

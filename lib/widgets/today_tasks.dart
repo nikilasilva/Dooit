@@ -72,26 +72,31 @@ class TodayTasks extends StatelessWidget {
                 border: Border.all(color: Colors.grey[200]!),
               ),
               child: Center(
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.event_available,
-                      size: 48,
-                      color: Colors.grey[400],
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      "No tasks scheduled",
-                      style: AppTextStyles.descriptionText,
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      "Tap + to add a new task",
-                      style: AppTextStyles.descriptionText.copyWith(
-                        fontSize: 14,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/add_task');
+                  },
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.event_available,
+                        size: 48,
+                        color: Colors.grey[400],
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 12),
+                      Text(
+                        "No tasks scheduled",
+                        style: AppTextStyles.descriptionText,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "Tap to add a new task",
+                        style: AppTextStyles.descriptionText.copyWith(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )

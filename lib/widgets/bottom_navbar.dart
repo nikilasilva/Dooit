@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 class BottomNavbar extends StatelessWidget {
   final int currentIndex;
 
-  const BottomNavbar({
-    super.key,
-    required this.currentIndex,
-  });
+  const BottomNavbar({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +23,17 @@ class BottomNavbar extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.pushReplacementNamed(context, '/home');              
+              Navigator.pushReplacementNamed(context, '/home');
               break;
             case 1:
               Navigator.pushNamed(context, '/calendar');
               break;
             case 2:
-              Navigator.pushNamed(context, '/add_task');
+              if (currentIndex == 2) {
+                Navigator.pop(context);
+              } else {
+                Navigator.pushNamed(context, '/add_task');
+              }
               break;
             case 3:
               Navigator.pushNamed(context, '/progress');
@@ -59,10 +60,7 @@ class BottomNavbar extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.transparent,
-                border: Border.all(
-                  color: AppColors.primary,
-                  width: 2,
-                ),
+                border: Border.all(color: AppColors.primary, width: 2),
               ),
               child: Icon(
                 currentIndex == 2 ? Icons.close : Icons.add,
