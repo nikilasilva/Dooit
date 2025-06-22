@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dooit/services/storage_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +8,8 @@ import '../services/auth_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
+  final StorageService _storageService = StorageService();
+
   User? _user;
   bool _isLoading = false;
   String? _errorMessage;
@@ -168,6 +173,40 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setError("Failed to update username: ${e.toString()}");
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // Change profile picture
+  Future<bool> updateProfilePicture(File imageFile) async {
+    if (_user == null || _user!.email == null) {
+      _setError("No user is currently signed in.");
+      return false;
+    }
+
+    _setLoading(true);
+    _clearError();
+
+    try {
+      // Upload the image to firebase
+      final downloadUrl = await _storageService.uploadProfilePicture(_user!.uid, imageFile);
+
+      if (downloadUrl == null) {
+        _setError("Failed to upload image.");
+        return false;
+      }
+
+      // Update the user's photoURL in firebase AUTH
+      await user!.updatePhotoURL(downloadUrl);
+
+      // Reload user data to get the latest info
+      await _user!.reload();
+      _user = _authService.currentUser;
+      return true;
+    } catch (e) {
+      _setError("Failed to update profile picture: ${e.toString()}");
       return false;
     } finally {
       _setLoading(false);

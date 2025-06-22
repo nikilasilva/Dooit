@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     ProfileImage(
-                      imagePath: "assets/images/pro_img.jpg",
+                      assetPath: "assets/images/pro_img.jpg",
                       fallbackText: "Profile Icon",
                       borderColor: AppColors.primary,
                       size: 110.0,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:change_case/change_case.dart';
 import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/utils/app_styles.dart';
@@ -11,6 +13,7 @@ import 'package:dooit/widgets/profile_image.dart';
 import 'package:dooit/widgets/profile_option_tile.dart';
 import 'package:dooit/widgets/skeleton_text.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -22,6 +25,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String _username = '';
+  String? _photoUrl;
+  File? _imagePreviewFile;
   bool _isLoading = true;
 
   Future<void> _loadUserData() async {
@@ -41,6 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ? email.split('@')[0]
                   : 'User';
           _username = rawName.toTitleCase();
+          _photoUrl = authProvider.user!.photoURL;
           _isLoading = false;
         });
       } else {
@@ -149,11 +155,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext dialogContext) {
         return ChangeProfilePictureDialog(
-          onTakePicture: () {},
-          onImportFromGallery: () {},
+          onTakePicture: () {
+            Navigator.pop(dialogContext);
+            _pickImage(ImageSource.camera);
+          },
+          onImportFromGallery: () {
+            Navigator.pop(dialogContext);
+            _pickImage(ImageSource.gallery);
+          },
         );
       },
     );
+  }
+
+  // Handle image picking and uploading
+  Future<void> _pickImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+
+    if (image != null) {
+      final imageFile = File(image.path);
+      setState(() {
+        _imagePreviewFile = imageFile;
+      });
+
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final success = await authProvider.updateProfilePicture(imageFile);
+
+      if (!mounted) return;
+
+      if (success) {
+        setState(() {
+          _imagePreviewFile = null;
+          _photoUrl = authProvider.user?.photoURL;
+        });
+        SnackbarHelper.showSuccessSnackBar(
+          context,
+          "Profile picture updated successfully!",
+        );
+      } else {
+        setState(() {
+          _imagePreviewFile = null;
+        });
+        SnackbarHelper.showErrorSnackBar(context, authProvider.errorMessage ?? "Failed to update profile picture.");
+      }
+    }
   }
 
   @override
@@ -183,8 +229,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text("Profile", style: AppTextStyles.heading),
                       SizedBox(height: 20),
                       ProfileImage(
-                        imagePath: "assets/images/pro_img.jpg",
-                        fallbackText: "Profile Icon",
+                        assetPath: "assets/images/default_profile.png",
+                        localFile: _imagePreviewFile,
+                        networkUrl: _photoUrl,
+                        fallbackText: _username.isNotEmpty ? _username : "Profile Icon",
                         borderColor: AppColors.primary,
                         size: 100.0,
                       ),
