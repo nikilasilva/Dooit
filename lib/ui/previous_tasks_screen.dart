@@ -1,9 +1,12 @@
+import 'package:dooit/providers/task_provider.dart';
 import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/custom_confirmation_dialog.dart';
 import 'package:dooit/widgets/custom_header.dart';
+import 'package:dooit/widgets/skeleton_task_tile.dart';
 import 'package:dooit/widgets/task_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PreviousTasksScreen extends StatefulWidget {
   const PreviousTasksScreen({super.key});
@@ -33,83 +36,90 @@ class _PreviousTasksScreenState extends State<PreviousTasksScreen> {
       backgroundColor: AppColors.white,
       bottomNavigationBar: BottomNavbar(currentIndex: 0),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomHeader(title: 'Previous Tasks'),
-              SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 22,
-                  vertical: 12,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TaskTile(
-                      title: "Water the plants",
-                      time: "12:00 pm",
-                      category: "Personal",
-                      done: false,
+        child: Consumer<TaskProvider>(
+          builder: (context, taskProvider, child) {
+            final now = DateTime.now();
+            final startOfToday = DateTime(now.year, now.month, now.day);
+            final previousTasks =
+                taskProvider.tasks.where((task) {
+                  return task.dueDate != null &&
+                      task.dueDate!.isBefore(startOfToday);
+                }).toList();
+
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomHeader(title: 'Previous Tasks'),
+                  SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 22,
+                      vertical: 12,
                     ),
-                    TaskTile(
-                      title: "Project meeting",
-                      time: "03:00 pm",
-                      category: "Work",
-                      done: false,
-                    ),
-                    TaskTile(
-                      title: "Abs workout",
-                      time: "04:00 am",
-                      category: "Health",
-                      done: false,
-                    ),
-                    TaskTile(
-                      title: "Brainstrom ideas for the project",
-                      time: "02:00 am",
-                      category: "Personal",
-                      done: true,
-                    ),
-                    TaskTile(
-                      title: "Feed the dog",
-                      time: "03:00 am",
-                      category: "Personal",
-                      done: true,
-                    ),
-                    TaskTile(title: "Buy milk", time: "08:00 am", category: "Personal", done: true),
-                    TaskTile(title: "Send email", time: "07:30 am", category: "Work", done: true),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 22),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      _showDeletePrevTasksDialog();
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.delete_forever,
-                          color: AppColors.red,
-                          size: 16,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          'Delete all completed tasks',
-                          style: AppTextStyles.cancelText,
-                        ),
+                        if (taskProvider.isLoading)
+                          // Handle the loading state
+                          ...List.generate(3, (index) => SkeletonTaskTile()),
+
+                        // Handle the empty state
+                        if (!taskProvider.isLoading && previousTasks.isEmpty)
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 48),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "No previous tasks found.",
+                              style: AppTextStyles.descriptionText,
+                            ),
+                          ),
+
+                        // Display the list of previous tasks dynamically
+                        if (!taskProvider.isLoading && previousTasks.isNotEmpty)
+                          ...previousTasks.map(
+                            (task) => TaskTile(
+                              title: task.title,
+                              time: task.time,
+                              category: task.category,
+                              done: task.isCompleted,
+                            ),
+                          ),
                       ],
                     ),
                   ),
-                ),
+                  // Conditionally show the delete button only if there are completed previous tasks
+                  if (!taskProvider.isLoading && previousTasks.any((task) => task.isCompleted))
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          _showDeletePrevTasksDialog();
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.delete_forever,
+                              color: AppColors.red,
+                              size: 16,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Delete all completed tasks',
+                              style: AppTextStyles.cancelText,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
