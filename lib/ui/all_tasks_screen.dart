@@ -15,6 +15,15 @@ class AllTasksScreen extends StatefulWidget {
 }
 
 class _AllTasksScreenState extends State<AllTasksScreen> {
+  DateTime todayDate = DateTime.now();
+  // Helper to check if two DateTime objects are on the same day
+  bool _isSameDay(DateTime? a, DateTime b) {
+    if (a == null) {
+      return false; // If a task has no due date, it can't match.
+    }
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +41,11 @@ class _AllTasksScreenState extends State<AllTasksScreen> {
   Widget build(BuildContext context) {
     return Consumer<TaskProvider>(
       builder: (context, taskProvider, child) {
+        final allTasks = taskProvider.tasks;
+        final todayTasks =
+            allTasks
+                .where((task) => _isSameDay(task.dueDate, todayDate))
+                .toList();
         return LoadingOverlay(
           isLoading: taskProvider.isLoading,
           child: Scaffold(
@@ -91,7 +105,7 @@ class _AllTasksScreenState extends State<AllTasksScreen> {
                               ),
                             )
                           else
-                            ...taskProvider.tasks
+                            ...todayTasks
                                 .map(
                                   (task) => GestureDetector(
                                     onTap: () {
@@ -106,45 +120,6 @@ class _AllTasksScreenState extends State<AllTasksScreen> {
                                   ),
                                 )
                                 .toList(),
-
-                          // TaskTile(
-                          //   title: "GYM workout",
-                          //   time: "12:00 pm",
-                          //   category: "Health",
-                          //   done: false,
-                          // ),
-                          // TaskTile(
-                          //   title: "Project meeting",
-                          //   time: "03:00 pm",
-                          //   category: "Work",
-                          //   done: false,
-                          // ),
-                          // TaskTile(
-                          //   title: "Dinner with Josh at 8pm",
-                          //   time: "02:00 am",
-                          //   category: "Personal",
-                          //   done: false,
-                          // ),
-                          // TaskTile(
-                          //   title: "Game meetup",
-                          //   time: "08:00 pm",
-                          //   category: "Personal",
-                          //   done: false,
-                          // ),
-                          // TaskTile(
-                          //   title: "Take out trash",
-                          //   time: "10:00 am",
-                          //   category: "Personal",
-                          //   done: true,
-                          // ),
-                          // TaskTile(
-                          //   title: "Feed the dog",
-                          //   time: "10:00 am",
-                          //   category: "Personal",
-                          //   done: true,
-                          // ),
-                          // TaskTile(title: "Buy milk", time: "08:00 am", category: "Personal", done: true),
-                          // TaskTile(title: "Send email", time: "07:30 am", category: "Work", done: true),
                         ],
                       ),
                     ),
