@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/providers/category_provider.dart';
 import 'package:dooit/providers/task_provider.dart';
@@ -25,7 +23,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String _username = '';
   String? _photoUrl;
-  File? _imagePreviewFile;
   bool _isLoading = true;
 
   @override
