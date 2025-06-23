@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/providers/category_provider.dart';
 import 'package:dooit/providers/task_provider.dart';
@@ -22,6 +24,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _username = '';
+  String? _photoUrl;
+  File? _imagePreviewFile;
   bool _isLoading = true;
 
   @override
@@ -65,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? email.split('@')[0]
                   : 'User';
           _username = rawName.toTitleCase();
+          _photoUrl = authProvider.user!.photoURL;
           _isLoading = false;
         });
       } else {
@@ -124,8 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     ProfileImage(
-                      assetPath: "assets/images/pro_img.jpg",
-                      fallbackText: "Profile Icon",
+                      assetPath: "assets/images/default_profile.png",
+                      networkUrl: _photoUrl,
+                      fallbackText: _username.isNotEmpty ? _username : "Profile Icon",
                       borderColor: AppColors.primary,
                       size: 110.0,
                     ),

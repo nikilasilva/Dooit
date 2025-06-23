@@ -9,10 +9,19 @@
       "client_info": {
         "mobilesdk_app_id": "1:1065547589580:android:d52bcb474dba9a2e78df69",
         "android_client_info": {
-          "package_name": "com.nikilasilva.dooIt"
+          "package_name": "com.nikilasilva.doolt"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1065547589580-4p2bhempkvn5ahjn91i22rvutecb143l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nikilasilva.doolt",
+            "certificate_hash": "2e14730653a8302acceed9e72f3ae434745053a6"
+          }
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD1sqEwaYs0P02TLAJeueGa7o9lIYW5t-4"

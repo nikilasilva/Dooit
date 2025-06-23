@@ -124,7 +124,10 @@ class AuthProvider extends ChangeNotifier {
 
     try {
       // Create credentials with the user's email and old password
-      AuthCredential credential = EmailAuthProvider.credential(email: _user!.email!, password: oldPassword);
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: _user!.email!,
+        password: oldPassword,
+      );
 
       // Re-authencticate the user to confirm their identity
       await _user!.reauthenticateWithCredential(credential);
@@ -133,7 +136,6 @@ class AuthProvider extends ChangeNotifier {
       await _user!.updatePassword(newPassword);
 
       return true;
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'wrong-password') {
         _setError('The old password you entered is incorrect.');
@@ -181,17 +183,27 @@ class AuthProvider extends ChangeNotifier {
 
   // Change profile picture
   Future<bool> updateProfilePicture(File imageFile) async {
-    if (_user == null || _user!.email == null) {
+    // --- START DIAGNOSTIC LOGGING ---
+    print('--- Starting Profile Picture Upload ---');
+    if (_user == null) {
+      print('DIAGNOSTIC: User is NULL. Upload cannot proceed.');
       _setError("No user is currently signed in.");
       return false;
     }
+    print('DIAGNOSTIC: User is signed in with UID: ${_user!.uid}');
+    final storagePath = 'profile_pictures/${_user!.uid}.jpg';
+    print('DIAGNOSTIC: Attempting to upload to path: $storagePath');
+    // --- END DIAGNOSTIC LOGGING ---
 
     _setLoading(true);
     _clearError();
 
     try {
       // Upload the image to firebase
-      final downloadUrl = await _storageService.uploadProfilePicture(_user!.uid, imageFile);
+      final downloadUrl = await _storageService.uploadProfilePicture(
+        _user!.uid,
+        imageFile,
+      );
 
       if (downloadUrl == null) {
         _setError("Failed to upload image.");
@@ -199,12 +211,20 @@ class AuthProvider extends ChangeNotifier {
       }
 
       // Update the user's photoURL in firebase AUTH
-      await user!.updatePhotoURL(downloadUrl);
+      await _user!.updatePhotoURL(downloadUrl);
 
       // Reload user data to get the latest info
       await _user!.reload();
       _user = _authService.currentUser;
       return true;
+    } on FirebaseException catch (e) {
+      print('----------- FIREBASE STORAGE ERROR -----------');
+      print('Error Code: ${e.code}');
+      print('Error Message: ${e.message}');
+      print('------------------------------------------');
+
+      _setError('Upload failed. See console for details.');
+      return false;
     } catch (e) {
       _setError("Failed to update profile picture: ${e.toString()}");
       return false;
