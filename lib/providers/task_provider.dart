@@ -198,6 +198,16 @@ class TaskProvider extends ChangeNotifier {
     return currentStreak;
   }
 
+  // get tasks count
+  Map<String, int> get taskCountByCategory {
+    final Map<String, int> counts = {};
+    for (final task in _tasks) {
+      final category = task.category;
+      counts[category] = (counts[category] ?? 0) + 1;
+    }
+    return counts;
+  }
+
   // Helper methods
   void _setLoading(bool loading) {
     _isLoading = loading;
