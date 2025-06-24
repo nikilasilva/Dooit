@@ -67,18 +67,18 @@ class TodayTasks extends StatelessWidget {
               // If not loading, check if the passed-in list is empty.
               if (tasks.isEmpty) {
                 // If empty, show the "No tasks" widget.
-                return Container(
-                  padding: EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey[200]!),
-                  ),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/add_task');
-                      },
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/add_task');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey[200]!),
+                    ),
+                    child: Center(
                       child: Column(
                         children: [
                           Icon(
