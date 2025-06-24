@@ -16,7 +16,7 @@ class HeatmapLegend extends StatelessWidget {
           ),
         ),
         SizedBox(width: 4),
-        Text(label, style: TextStyle(fontSize: 10, color: Colors.grey[600])),
+        Text(label, style: TextStyle(fontSize: 9, color: Colors.grey[600])),
       ],
     );
   }
@@ -30,7 +30,7 @@ class HeatmapLegend extends StatelessWidget {
           Text(
             "Tasks Completed:",
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 11,
               color: Colors.grey[600],
               fontWeight: FontWeight.w500,
             ),

@@ -22,7 +22,9 @@ class TaskProvider extends ChangeNotifier {
   List<Task> get tasksForToday {
     final now = DateTime.now();
     return _tasks.where((task) {
-      return task.dueDate!.year == now.year && task.dueDate!.month == now.month && task.dueDate!.day == now.day;
+      return task.dueDate!.year == now.year &&
+          task.dueDate!.month == now.month &&
+          task.dueDate!.day == now.day;
     }).toList();
   }
 
@@ -125,16 +127,19 @@ class TaskProvider extends ChangeNotifier {
       final now = DateTime.now();
       final startOfToday = DateTime(now.year, now.month, now.day);
 
-      final tasksToDelete = _tasks.where((task) {
-        return task.isCompleted && task.dueDate != null && task.dueDate!.isBefore(startOfToday);
-      }).toList();
+      final tasksToDelete =
+          _tasks.where((task) {
+            return task.isCompleted &&
+                task.dueDate != null &&
+                task.dueDate!.isBefore(startOfToday);
+          }).toList();
 
       if (tasksToDelete.isEmpty) {
         _setLoading(false);
         return;
       }
 
-      final taskIdsToDelete = tasksToDelete.map((task) =>task.id).toList();
+      final taskIdsToDelete = tasksToDelete.map((task) => task.id).toList();
 
       await _firestoreService.deleteBatchTasks(userId, taskIdsToDelete);
     } catch (e) {
@@ -142,7 +147,6 @@ class TaskProvider extends ChangeNotifier {
     } finally {
       _setLoading(false);
     }
-
   }
 
   // Getters for progress screen
@@ -166,7 +170,11 @@ class TaskProvider extends ChangeNotifier {
 
     for (var task in _tasks) {
       if (task.isCompleted && task.dueDate != null) {
-        final day = DateTime(task.dueDate!.year, task.dueDate!.month, task.dueDate!.day);
+        final day = DateTime(
+          task.dueDate!.year,
+          task.dueDate!.month,
+          task.dueDate!.day,
+        );
         completedDays.add(day);
       }
     }
@@ -206,6 +214,23 @@ class TaskProvider extends ChangeNotifier {
       counts[category] = (counts[category] ?? 0) + 1;
     }
     return counts;
+  }
+
+  // In your TaskProvider class
+  Map<DateTime, int> get completedTasksPerDay {
+    final Map<DateTime, int> result = {};
+    for (final task in _tasks) {
+      if (task.isCompleted && task.dueDate != null) {
+        // Normalize the date to remove time
+        final date = DateTime(
+          task.dueDate!.year,
+          task.dueDate!.month,
+          task.dueDate!.day,
+        );
+        result[date] = (result[date] ?? 0) + 1;
+      }
+    }
+    return result;
   }
 
   // Helper methods
