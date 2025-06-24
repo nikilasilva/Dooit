@@ -109,6 +109,40 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
+  // Delete completed previous tasks
+  Future<void> deleteCompletedPreviousTasks() async {
+    if (_auth.currentUser == null) {
+      _setError("You must be logged into perform this action");
+      return;
+    }
+    _setLoading(true);
+    _clearError();
+
+    try {
+      final userId = _auth.currentUser!.uid;
+      final now = DateTime.now();
+      final startOfToday = DateTime(now.year, now.month, now.day);
+
+      final tasksToDelete = _tasks.where((task) {
+        return task.isCompleted && task.dueDate != null && task.dueDate!.isBefore(startOfToday);
+      }).toList();
+
+      if (tasksToDelete.isEmpty) {
+        _setLoading(false);
+        return;
+      }
+
+      final taskIdsToDelete = tasksToDelete.map((task) =>task.id).toList();
+
+      await _firestoreService.deleteBatchTasks(userId, taskIdsToDelete);
+    } catch (e) {
+      _setError("Failed to delete completed tasks: $e");
+    } finally {
+      _setLoading(false);
+    }
+
+  }
+
   // Helper methods
   void _setLoading(bool loading) {
     _isLoading = loading;

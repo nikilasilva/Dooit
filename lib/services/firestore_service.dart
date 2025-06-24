@@ -88,6 +88,16 @@ class FirestoreService {
         );
   }
 
+  Future<void> deleteBatchTasks(String userId, List<String> taskIds) async {
+    final batch = _db.batch();
+    final tasksCollection = _getUserTasksCollection(userId);
+    for (final taskId in taskIds) {
+      batch.delete(tasksCollection.doc(taskId));
+    }
+
+    await batch.commit();
+  }
+
   Stream<List<Map<String, dynamic>>> getUserCategories(String userId) {
     return _db
         .collection('users')

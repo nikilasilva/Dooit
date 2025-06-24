@@ -13,7 +13,7 @@ class AppColors {
 
 class AppTextStyles {
   static const TextStyle logoStyle = TextStyle(
-    fontSize: 48,
+    fontSize: 60,
     fontWeight: FontWeight.bold,
     color: AppColors.primary,
   );
