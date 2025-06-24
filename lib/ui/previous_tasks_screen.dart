@@ -86,11 +86,16 @@ class _PreviousTasksScreenState extends State<PreviousTasksScreen> {
                           if (!taskProvider.isLoading &&
                               previousTasks.isNotEmpty)
                             ...previousTasks.map(
-                              (task) => TaskTile(
-                                title: task.title,
-                                time: task.time,
-                                category: task.category,
-                                done: task.isCompleted,
+                              (task) => GestureDetector(
+                                onTap:
+                                    () =>
+                                        taskProvider.toggleTaskCompletion(task),
+                                child: TaskTile(
+                                  title: task.title,
+                                  time: task.time,
+                                  category: task.category,
+                                  done: task.isCompleted,
+                                ),
                               ),
                             ),
                         ],
