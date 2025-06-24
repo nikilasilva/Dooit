@@ -61,7 +61,7 @@ class _AllTasksScreenState extends State<AllTasksScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 22,
-                        vertical: 8,
+                        vertical: 15,
                       ),
                       child: SizedBox(
                         width: double.infinity,
@@ -80,7 +80,7 @@ class _AllTasksScreenState extends State<AllTasksScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 22,
-                        vertical: 12,
+                        vertical: 20,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,16 +91,13 @@ class _AllTasksScreenState extends State<AllTasksScreen> {
                           ),
                           const SizedBox(height: 16),
 
-                          if (taskProvider.tasks.isEmpty)
-                            const Center(
+                          if (todayTasks.isEmpty)
+                            Center(
                               child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 32.0),
+                                padding: const EdgeInsets.symmetric(vertical: 25.0),
                                 child: Text(
                                   'No tasks yet. Add a task to get started!',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 16,
-                                  ),
+                                  style: AppTextStyles.descriptionText,
                                 ),
                               ),
                             )
