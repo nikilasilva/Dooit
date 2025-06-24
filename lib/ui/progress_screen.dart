@@ -1,3 +1,4 @@
+import 'package:dooit/providers/task_provider.dart';
 import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/custom_header.dart';
@@ -5,6 +6,7 @@ import 'package:dooit/widgets/daily_productivity_map.dart';
 import 'package:dooit/widgets/progress_stats.dart';
 import 'package:dooit/widgets/tasks_by_category.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({super.key});
@@ -20,28 +22,40 @@ class _ProgressScreenState extends State<ProgressScreen> {
       backgroundColor: AppColors.white,
       bottomNavigationBar: BottomNavbar(currentIndex: 3),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CustomHeader(title: "Progress"),
-              SizedBox(height: 30),
-              
-              // Progress Stats Section
-              ProgressStats(),
-              
-              SizedBox(height: 32),
-              
-              // Daily Productivity Map Section
-              DailyProductivityMap(),
-              
-              SizedBox(height: 32),
-              
-              // Tasks by Category Section
-              TasksByCategory(),
-              
-              SizedBox(height: 100), // Bottom padding for navigation bar
-            ],
-          ),
+        child: Consumer<TaskProvider>(
+          builder: (context, taskProvider, child) {
+            final completedToday = taskProvider.completedTasksToday;
+            final totalToday = taskProvider.totalTasksToday;
+            final streak = taskProvider.completionStreak;
+
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  CustomHeader(title: "Progress"),
+                  SizedBox(height: 30),
+
+                  // Progress Stats Section
+                  ProgressStats(
+                    completedToday: completedToday,
+                    totalToday: totalToday,
+                    streak: streak,
+                  ),
+
+                  SizedBox(height: 32),
+
+                  // Daily Productivity Map Section
+                  DailyProductivityMap(),
+
+                  SizedBox(height: 32),
+
+                  // Tasks by Category Section
+                  TasksByCategory(),
+
+                  SizedBox(height: 100), // Bottom padding for navigation bar
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/task.dart';
@@ -141,6 +143,59 @@ class TaskProvider extends ChangeNotifier {
       _setLoading(false);
     }
 
+  }
+
+  // Getters for progress screen
+  // Number of tasks completed today
+  int get completedTasksToday {
+    return tasksForToday.where((task) {
+      return task.isCompleted;
+    }).length;
+  }
+
+  // Total number of tasks scheduled for today
+  int get totalTasksToday {
+    return tasksForToday.length;
+  }
+
+  // Calculates the current completion streak
+  int get completionStreak {
+    // 1. Get all unique days where at least one task was completed
+    // SplayTreeset automatically sorts the dates
+    final completedDays = SplayTreeSet<DateTime>((a, b) => a.compareTo(b));
+
+    for (var task in _tasks) {
+      if (task.isCompleted && task.dueDate != null) {
+        final day = DateTime(task.dueDate!.year, task.dueDate!.month, task.dueDate!.day);
+        completedDays.add(day);
+      }
+    }
+
+    if (completedDays.isEmpty) return 0;
+
+    // 2. Check if the streak is current (includes today or yesterday)
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(Duration(days: 1));
+
+    if (!completedDays.contains(today) && !completedDays.contains(yesterday)) {
+      return 0; // Streak is broken
+    }
+
+    // 3. Calculate the length of the current streak.
+    int currentStreak = 0;
+    DateTime expectedDay = today;
+
+    for (final day in completedDays.toList().reversed) {
+      if (day == expectedDay || (currentStreak == 0 && day == yesterday)) {
+        currentStreak++;
+        expectedDay = day.subtract(Duration(days: 1));
+      } else if (day.isBefore(expectedDay)) {
+        break;
+      }
+    }
+
+    return currentStreak;
   }
 
   // Helper methods
