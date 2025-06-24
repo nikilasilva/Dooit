@@ -29,6 +29,7 @@ class _SigninScreenState extends State<SigninScreen> {
   }
 
   Future<void> _handleSignIn() async {
+    FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
 

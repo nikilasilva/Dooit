@@ -32,6 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _handleSignUp() async {
+    FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
       if (_passwordController.text != _confirmPasswordController.text) {
         ScaffoldMessenger.of(
