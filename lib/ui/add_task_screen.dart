@@ -1,3 +1,4 @@
+import 'package:dooit/providers/category_provider.dart';
 import 'package:dooit/providers/task_provider.dart';
 import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/utils/snackbar_helper.dart';
@@ -25,6 +26,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   String _selectedCategory = 'Personal';
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
+
+  @override
+  void initState() {
+    super.initState();
+    // When the screen loads, tell the categoryProvider to fetch user categories.
+    // We use addPostFrameCallback to ensure the context is ready
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<CategoryProvider>(context, listen: false).updateUser();
+    });
+  }
 
   @override
   void dispose() {
@@ -67,8 +78,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskProvider>(
-      builder: (context, taskProvider, child) {
+    return Consumer2<TaskProvider, CategoryProvider>(
+      builder: (context, taskProvider, categoryProvider, child) {
+        final categoryItems = categoryProvider.categories.map((cat) => cat['label'] as String).toList();
         return LoadingOverlay(
           isLoading: taskProvider.isLoading,
           message: "Adding task...",
@@ -108,7 +120,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               SizedBox(height: 16),
                               CustomDropdownField(
                                 label: 'Category',
-                                items: const ['Work', 'Personal', 'Shopping'],
+                                items: categoryItems,
                                 initialValue: _selectedCategory,
                                 onChanged: (newValue) {
                                   if (newValue != null) {
