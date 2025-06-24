@@ -16,13 +16,6 @@ class AllTasksScreen extends StatefulWidget {
 
 class _AllTasksScreenState extends State<AllTasksScreen> {
   DateTime todayDate = DateTime.now();
-  // Helper to check if two DateTime objects are on the same day
-  bool _isSameDay(DateTime? a, DateTime b) {
-    if (a == null) {
-      return false; // If a task has no due date, it can't match.
-    }
-    return a.year == b.year && a.month == b.month && a.day == b.day;
-  }
 
   @override
   void initState() {
@@ -41,11 +34,7 @@ class _AllTasksScreenState extends State<AllTasksScreen> {
   Widget build(BuildContext context) {
     return Consumer<TaskProvider>(
       builder: (context, taskProvider, child) {
-        final allTasks = taskProvider.tasks;
-        final todayTasks =
-            allTasks
-                .where((task) => _isSameDay(task.dueDate, todayDate))
-                .toList();
+        final todayTasks = taskProvider.tasksForToday;
         return LoadingOverlay(
           isLoading: taskProvider.isLoading,
           child: Scaffold(
