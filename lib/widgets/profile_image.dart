@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dooit/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class ProfileImage extends StatelessWidget {
@@ -39,7 +40,9 @@ class ProfileImage extends StatelessWidget {
         fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(
+            color: AppColors.primary,
+          ));
         },
         errorBuilder: (context, error, stackTrace) {
           // Fallback to asset image on error
