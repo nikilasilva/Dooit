@@ -170,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           return _buildCategorySkeletons();
                         }
                         final displayedCategories =
-                            categoryProvider.categories.take(3).toList();
+                            categoryProvider.categories.toList();
 
                         if (displayedCategories.isEmpty) {
                           return const Center(
@@ -181,37 +181,46 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }
 
+                        // Calculate width for precisely 3 cards to be visible
+                        final screenWidth = MediaQuery.of(context).size.width;
+                        final availableWidth =
+                            screenWidth - 44; // Account for container padding
+                        final cardWidth =
+                            (availableWidth / 3) -
+                            8; // Subtract for spacing between cards
+
                         // Build the category buttons dynamically
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 10,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children:
-                                displayedCategories.map((category) {
-                                  return CategoryButton(
-                                    icon: category['icon'],
-                                    label: category['label'],
-                                    id: category['id'],
-                                    onTap: () {
-                                      // Navigate to the full categories screen or a filtered task list
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => CategoryTasksScreen(
-                                                categoryId:
-                                                    category['id'] as String,
-                                                categoryName:
-                                                    category['label'] as String,
-                                              ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                }).toList(),
+                        return SizedBox(
+                          height: 82,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: displayedCategories.length,
+                            itemBuilder: (context, index) {
+                              final category = displayedCategories[index];
+                              return Container(
+                                width: cardWidth,
+                                margin: const EdgeInsets.only(right: 12),
+                                child: CategoryButton(
+                                  icon: category['icon'],
+                                  label: category['label'],
+                                  id: category['id'],
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => CategoryTasksScreen(
+                                              categoryId:
+                                                  category['id'] as String,
+                                              categoryName:
+                                                  category['label'] as String,
+                                            ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                           ),
                         );
                       },
