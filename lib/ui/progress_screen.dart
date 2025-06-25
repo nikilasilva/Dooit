@@ -1,10 +1,10 @@
-import 'package:dooit/providers/task_provider.dart';
-import 'package:dooit/utils/app_styles.dart';
-import 'package:dooit/widgets/bottom_navbar.dart';
-import 'package:dooit/widgets/custom_header.dart';
-import 'package:dooit/widgets/daily_productivity_map.dart';
-import 'package:dooit/widgets/progress_stats.dart';
-import 'package:dooit/widgets/tasks_by_category.dart';
+import 'package:DooIt/providers/task_provider.dart';
+import 'package:DooIt/utils/app_styles.dart';
+import 'package:DooIt/widgets/bottom_navbar.dart';
+import 'package:DooIt/widgets/custom_header.dart';
+import 'package:DooIt/widgets/daily_productivity_map.dart';
+import 'package:DooIt/widgets/progress_stats.dart';
+import 'package:DooIt/widgets/tasks_by_category.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

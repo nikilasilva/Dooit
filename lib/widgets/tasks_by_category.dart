@@ -1,6 +1,6 @@
-import 'package:dooit/providers/task_provider.dart';
-import 'package:dooit/utils/app_styles.dart';
-import 'package:dooit/widgets/category_bar_chart.dart';
+import 'package:DooIt/providers/task_provider.dart';
+import 'package:DooIt/utils/app_styles.dart';
+import 'package:DooIt/widgets/category_bar_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

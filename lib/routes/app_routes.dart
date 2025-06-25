@@ -1,14 +1,14 @@
-import 'package:dooit/ui/add_task_screen.dart';
-import 'package:dooit/ui/all_tasks_screen.dart';
-import 'package:dooit/ui/calendar_screen.dart';
-import 'package:dooit/ui/categories_screen.dart';
-import 'package:dooit/ui/home_screen.dart';
-import 'package:dooit/ui/onboarding_screen.dart';
-import 'package:dooit/ui/previous_tasks_screen.dart';
-import 'package:dooit/ui/profile_screen.dart';
-import 'package:dooit/ui/progress_screen.dart';
-import 'package:dooit/ui/signin_screen.dart';
-import 'package:dooit/ui/signup_screen.dart';
+import 'package:DooIt/ui/add_task_screen.dart';
+import 'package:DooIt/ui/all_tasks_screen.dart';
+import 'package:DooIt/ui/calendar_screen.dart';
+import 'package:DooIt/ui/categories_screen.dart';
+import 'package:DooIt/ui/home_screen.dart';
+import 'package:DooIt/ui/onboarding_screen.dart';
+import 'package:DooIt/ui/previous_tasks_screen.dart';
+import 'package:DooIt/ui/profile_screen.dart';
+import 'package:DooIt/ui/progress_screen.dart';
+import 'package:DooIt/ui/signin_screen.dart';
+import 'package:DooIt/ui/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {

@@ -1,7 +1,7 @@
-import 'package:dooit/providers/auth_provider.dart';
-import 'package:dooit/providers/category_provider.dart';
-import 'package:dooit/providers/task_provider.dart';
-import 'package:dooit/routes/app_routes.dart';
+import 'package:DooIt/providers/auth_provider.dart';
+import 'package:DooIt/providers/category_provider.dart';
+import 'package:DooIt/providers/task_provider.dart';
+import 'package:DooIt/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

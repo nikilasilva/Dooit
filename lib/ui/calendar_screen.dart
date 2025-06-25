@@ -1,10 +1,10 @@
-import 'package:dooit/providers/task_provider.dart';
-import 'package:dooit/utils/app_styles.dart';
-import 'package:dooit/widgets/bottom_navbar.dart';
-import 'package:dooit/widgets/calendar_grid.dart';
-import 'package:dooit/widgets/custom_header.dart';
-import 'package:dooit/widgets/month_header.dart';
-import 'package:dooit/widgets/today_tasks.dart';
+import 'package:DooIt/providers/task_provider.dart';
+import 'package:DooIt/utils/app_styles.dart';
+import 'package:DooIt/widgets/bottom_navbar.dart';
+import 'package:DooIt/widgets/calendar_grid.dart';
+import 'package:DooIt/widgets/custom_header.dart';
+import 'package:DooIt/widgets/month_header.dart';
+import 'package:DooIt/widgets/today_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

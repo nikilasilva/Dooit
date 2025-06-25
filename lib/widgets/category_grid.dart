@@ -1,6 +1,6 @@
-import 'package:dooit/ui/category_tasks_screen.dart';
+import 'package:DooIt/ui/category_tasks_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:dooit/widgets/category_button.dart';
+import 'package:DooIt/widgets/category_button.dart';
 
 class CategoryGrid extends StatelessWidget {
   final List<Map<String, dynamic>> categories;

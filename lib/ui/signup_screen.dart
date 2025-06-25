@@ -1,9 +1,9 @@
-import 'package:dooit/providers/auth_provider.dart';
-import 'package:dooit/services/auth_service.dart';
-import 'package:dooit/utils/app_styles.dart';
-import 'package:dooit/widgets/custom_input_field_label.dart';
-import 'package:dooit/widgets/custom_password_field.dart';
-import 'package:dooit/widgets/loading_overlay.dart';
+import 'package:DooIt/providers/auth_provider.dart';
+import 'package:DooIt/services/auth_service.dart';
+import 'package:DooIt/utils/app_styles.dart';
+import 'package:DooIt/widgets/custom_input_field_label.dart';
+import 'package:DooIt/widgets/custom_password_field.dart';
+import 'package:DooIt/widgets/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';

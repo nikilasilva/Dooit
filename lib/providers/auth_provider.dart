@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dooit/services/storage_service.dart';
+import 'package:DooIt/services/storage_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';

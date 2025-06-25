@@ -1,4 +1,4 @@
-import 'package:dooit/utils/app_styles.dart';
+import 'package:DooIt/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 

@@ -1,5 +1,5 @@
-import 'package:dooit/utils/app_styles.dart';
-import 'package:dooit/widgets/heatmap_legend.dart';
+import 'package:DooIt/utils/app_styles.dart';
+import 'package:DooIt/widgets/heatmap_legend.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

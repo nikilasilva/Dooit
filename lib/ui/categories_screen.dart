@@ -1,11 +1,11 @@
-import 'package:dooit/providers/category_provider.dart';
-import 'package:dooit/utils/app_styles.dart';
-import 'package:dooit/utils/snackbar_helper.dart';
-import 'package:dooit/widgets/bottom_navbar.dart';
-import 'package:dooit/widgets/category_grid.dart';
-import 'package:dooit/widgets/custom_header.dart';
-import 'package:dooit/widgets/custom_input_dialog.dart';
-import 'package:dooit/widgets/loading_overlay.dart';
+import 'package:DooIt/providers/category_provider.dart';
+import 'package:DooIt/utils/app_styles.dart';
+import 'package:DooIt/utils/snackbar_helper.dart';
+import 'package:DooIt/widgets/bottom_navbar.dart';
+import 'package:DooIt/widgets/category_grid.dart';
+import 'package:DooIt/widgets/custom_header.dart';
+import 'package:DooIt/widgets/custom_input_dialog.dart';
+import 'package:DooIt/widgets/loading_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

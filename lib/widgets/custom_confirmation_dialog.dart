@@ -1,5 +1,5 @@
-import 'package:dooit/utils/app_styles.dart';
-import 'package:dooit/widgets/action_buttons_row.dart';
+import 'package:DooIt/utils/app_styles.dart';
+import 'package:DooIt/widgets/action_buttons_row.dart';
 import 'package:flutter/material.dart';
 
 class CustomConfirmationDialog extends StatelessWidget {
