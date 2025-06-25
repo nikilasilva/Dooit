@@ -1,3 +1,4 @@
+import 'package:dooit/ui/category_tasks_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dooit/widgets/category_button.dart';
 
@@ -21,16 +22,22 @@ class CategoryGrid extends StatelessWidget {
       children:
           categories.map((category) {
             return CategoryButton(
-          icon: category['icon'],
-          label: category['label'],
-          id: category['id'],
-          onTap: onCategoryTap != null && category['id'] != null
-              ? () => onCategoryTap!(category['id'], category['label'])
-              : null,
-          onLongPress: onCategoryLongPress != null && category['id'] != null
-              ? () => onCategoryLongPress!(category['id'], category['label'])
-              : null,
-        );
+              icon: category['icon'],
+              label: category['label'],
+              id: category['id'],
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => CategoryTasksScreen(
+                          categoryId: category['id'] as String,
+                          categoryName: category['label'] as String,
+                        ),
+                  ),
+                );
+              },
+            );
           }).toList(),
     );
   }
