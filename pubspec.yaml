@@ -1,5 +1,5 @@
-name: dooit
-description: "A new Flutter project."
+name: DooIt
+description: "A task management app that helps users organize and track their daily tasks with features for categorization, scheduling, and productivity analytics."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
