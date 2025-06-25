@@ -1,6 +1,7 @@
 import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/providers/category_provider.dart';
 import 'package:dooit/providers/task_provider.dart';
+import 'package:dooit/ui/category_tasks_screen.dart';
 import 'package:dooit/utils/app_styles.dart';
 import 'package:dooit/widgets/bottom_navbar.dart';
 import 'package:dooit/widgets/category_button.dart';
@@ -128,7 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ProfileImage(
                       assetPath: "assets/images/default_profile.png",
                       networkUrl: _photoUrl,
-                      fallbackText: _username.isNotEmpty ? _username : "Profile Icon",
+                      fallbackText:
+                          _username.isNotEmpty ? _username : "Profile Icon",
                       borderColor: AppColors.primary,
                       size: 110.0,
                     ),
@@ -181,7 +183,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         // Build the category buttons dynamically
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 10,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children:
@@ -192,7 +197,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     id: category['id'],
                                     onTap: () {
                                       // Navigate to the full categories screen or a filtered task list
-                                      Navigator.pushNamed(context, '/categories');
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => CategoryTasksScreen(
+                                                categoryId:
+                                                    category['id'] as String,
+                                                categoryName:
+                                                    category['label'] as String,
+                                              ),
+                                        ),
+                                      );
                                     },
                                   );
                                 }).toList(),
@@ -207,7 +223,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // Tasks with separate padding
               Container(
-                padding: EdgeInsets.fromLTRB(22, 0, 22, 22), // Padding for tasks
+                padding: EdgeInsets.fromLTRB(
+                  22,
+                  0,
+                  22,
+                  22,
+                ), // Padding for tasks
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -256,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return GestureDetector(
                                   onTap:
                                       () => taskProvider.toggleTaskCompletion(
-                                        task
+                                        task,
                                       ),
                                   child: TaskTile(
                                     title: task.title,
