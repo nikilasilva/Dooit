@@ -6,12 +6,14 @@ class CustomInputDialog extends StatefulWidget {
   final String title;
   final String hintText;
   final String initialValue;
+  final String? description;
   final void Function(String value) onSubmit;
 
   const CustomInputDialog({
     super.key,
     required this.title,
     required this.hintText,
+    this.description,
     required this.onSubmit,
     this.initialValue = '',
   });
@@ -60,6 +62,10 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
               alignment: Alignment.centerLeft,
               child: Text(widget.title, style: AppTextStyles.subHeading),
             ),
+            if (widget.description != null) ...[
+              const SizedBox(height: 12),
+              Text(widget.description!, style: AppTextStyles.descriptionText),
+            ],
             const SizedBox(height: 16),
             TextField(
               controller: _controller,

@@ -12,6 +12,7 @@ class AuthProvider extends ChangeNotifier {
 
   User? _user;
   bool _isLoading = false;
+  bool _isResettingPassword = false;
   String? _errorMessage;
 
   // Getters
@@ -19,6 +20,7 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _user != null;
+  bool get isResettingPassowrd => _isResettingPassword;
 
   AuthProvider() {
     // Listen to auth state changes
@@ -100,7 +102,7 @@ class AuthProvider extends ChangeNotifier {
   // Reset password
   Future<bool> resetPassword(String email) async {
     try {
-      _setLoading(true);
+      _setResettingPassword(true);
       _clearError();
 
       await _authService.resetPassword(email);
@@ -109,7 +111,7 @@ class AuthProvider extends ChangeNotifier {
       _setError(e.toString());
       return false;
     } finally {
-      _setLoading(false);
+      _setResettingPassword(false);
     }
   }
 
@@ -251,5 +253,10 @@ class AuthProvider extends ChangeNotifier {
 
   void clearError() {
     _clearError();
+  }
+
+  void _setResettingPassword(bool loading) {
+    _isResettingPassword = loading;
+    notifyListeners();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dooit/providers/auth_provider.dart';
 import 'package:dooit/services/auth_service.dart';
 import 'package:dooit/utils/snackbar_helper.dart';
+import 'package:dooit/widgets/custom_input_dialog.dart';
 import 'package:dooit/widgets/custom_input_field_label.dart';
 import 'package:dooit/widgets/custom_password_field.dart';
 import 'package:dooit/widgets/loading_overlay.dart';
@@ -66,6 +67,41 @@ class _SigninScreenState extends State<SigninScreen> {
         }
       }
     }
+  }
+
+  void _showPasswordResetDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) {
+        return CustomInputDialog(
+          title: "Reset Password",
+          hintText: "Email",
+          description: "Enter the email associated with your DooIt account",
+          onSubmit: (email) async {
+            if (email.isEmpty ||
+                !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+              SnackbarHelper.showErrorSnackBar(
+                context,
+                "Please enter a valid email address",
+              );
+              return;
+            }
+
+            final authProvider = Provider.of<AuthProvider>(context, listen: false);
+            final success = await authProvider.resetPassword(email);
+
+            if (!mounted) return;
+
+            if (success) {
+              SnackbarHelper.showSuccessSnackBar(context, "Password reset link sent to $email");
+            } else {
+              SnackbarHelper.showErrorSnackBar(context, authProvider.errorMessage ?? "Failed to send password reset email");
+            }
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -145,9 +181,12 @@ class _SigninScreenState extends State<SigninScreen> {
                         const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            'Forgot Password?',
-                            style: AppTextStyles.linkStyle,
+                          child: GestureDetector(
+                            onTap: _showPasswordResetDialog,
+                            child: Text(
+                              'Forgot Password?',
+                              style: AppTextStyles.linkStyle,
+                            ),
                           ),
                         ),
 
