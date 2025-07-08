@@ -22,6 +22,7 @@ class TaskProvider extends ChangeNotifier {
   List<Task> get tasksForToday {
     final now = DateTime.now();
     return _tasks.where((task) {
+      if (task.dueDate == null) return false; // Prevent exception
       return task.dueDate!.year == now.year &&
           task.dueDate!.month == now.month &&
           task.dueDate!.day == now.day;

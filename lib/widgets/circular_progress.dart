@@ -15,7 +15,7 @@ class CircularProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double progress = completed / total;
+    double progress = (total > 0) ? (completed / total) : 0.0;
     return SizedBox(
       width: size,
       height: size,
